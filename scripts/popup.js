@@ -1,21 +1,7 @@
 let changeColor = document.getElementById('changeColor');
 let directConnection = document.getElementById('removeProxy')
-let mute = document.getElementById('muteAudio')
-let unMuteAudio = document.getElementById('unMuteAudio')
-
-
-
-mute.onclick = function(){
-  chrome.audio.setMute('INPUT', true, ()=>{
-    console.log('Muted')
-  })
-}
-
-unMuteAudio.onclick = function(){
-  chrome.audio.setMute('INPUT', false, ()=>{
-    console.log('Un Muted')
-  })
-}
+// let mute = document.getElementById('muteAudio')
+// let unMuteAudio = document.getElementById('unMuteAudio')
 
 
 chrome.storage.sync.get('color', function(data) {
@@ -39,7 +25,7 @@ chrome.storage.sync.get('color', function(data) {
       rules: {
         proxyForHttps:{
           scheme: 'https',
-          host: '160.2.38.41'
+          host: '160.2.38.41:8080',
         },
         bypassList: ['github.com']
       }
