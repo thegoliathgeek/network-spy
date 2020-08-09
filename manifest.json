@@ -4,12 +4,21 @@
     "description": "Decrease video quality and  microphone volume. Even though your internet speed is high",
     "version": "1",
     "author": "Joker",
-    "browser_action": {
-      "default_icon": "./logos/sitlogo.png",
-      "default_title": "Have a nice exam",
+    "page_action": {
+      "default_icon": {
+        "16": "logos/sitlogo.png",
+        "32": "logos/sitlogo.png",
+        "48": "logos/sitlogo.png",
+        "128": "logos/sitlogo.png"
+      },
+      "default_title": "SIT Exam cheat. Have a nice exam",
       "default_popup": "./markups/popup.html"
     },
     "chrome_url_overrides" : {
     },
-    "permissions": ["activeTab", "proxy"]
+    "background": {
+      "scripts": ["./scripts/background.js"],
+      "persistent": false
+    },
+    "permissions": ["activeTab", "proxy", "storage", "declarativeContent"]
    }
