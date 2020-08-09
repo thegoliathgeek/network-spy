@@ -1,18 +1,27 @@
 let changeColor = document.getElementById('changeColor');
-
+let directConnection = document.getElementById('removeProxy')
 chrome.storage.sync.get('color', function(data) {
     changeColor.style.backgroundColor = data.color;
     changeColor.setAttribute('value', data.color);
   });
 
+
+  directConnection.onclick = function (element) {
+     const config = {
+       mode: 'direct'
+     }
+     chrome.proxy.settings.set({value: config, scope: 'regular'}, ()=>{
+       console.log('Proxy set to direct connection')
+     });
+  }
   changeColor.onclick = function(element) {
 
     const config = {
-      mode: 'direct',
+      mode: 'fixed_servers',
       rules: {
         proxyForHttps:{
           scheme: 'https',
-          host: '103.28.118.50'
+          host: '160.2.38.41'
         },
         bypassList: ['github.com']
       }

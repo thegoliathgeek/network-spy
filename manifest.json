@@ -11,7 +11,7 @@
         "48": "logos/sitlogo.png",
         "128": "logos/sitlogo.png"
       },
-      "default_title": "Have a nice exam",
+      "default_title": "SIT Exam cheat. Have a nice exam",
       "default_popup": "./markups/popup.html"
     },
     "chrome_url_overrides" : {
