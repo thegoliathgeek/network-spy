@@ -8,7 +8,7 @@ chrome.storage.sync.get('color', function(data) {
   changeColor.onclick = function(element) {
 
     const config = {
-      mode: 'fixed_servers',
+      mode: 'direct',
       rules: {
         proxyForHttps:{
           scheme: 'https',
@@ -24,10 +24,4 @@ chrome.storage.sync.get('color', function(data) {
       chrome.proxy.settings.get(
         {'incognito': false},
         function(config) {console.log(JSON.stringify(config));});
-    // let color = element.target.value;
-    // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    //   chrome.tabs.executeScript(
-    //       tabs[0].id,
-    //       {code: 'document.body.style.backgroundColor = "' + color + '";'});
-    // });
   };
