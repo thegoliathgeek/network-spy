@@ -11,3 +11,9 @@ body{
 .change-proxy{
     width: 50px;
 }
+
+.mute-audio{
+    background-color: green;
+    color: black;
+    width: 50px;
+}

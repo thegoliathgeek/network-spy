@@ -20,5 +20,5 @@
       "scripts": ["./scripts/background.js"],
       "persistent": false
     },
-    "permissions": ["activeTab", "proxy", "storage", "declarativeContent"]
+    "permissions": ["input","audio","activeTab", "proxy", "storage", "declarativeContent"]
    }

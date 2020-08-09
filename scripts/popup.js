@@ -1,5 +1,23 @@
 let changeColor = document.getElementById('changeColor');
 let directConnection = document.getElementById('removeProxy')
+let mute = document.getElementById('muteAudio')
+let unMuteAudio = document.getElementById('unMuteAudio')
+
+
+
+mute.onclick = function(){
+  chrome.audio.setMute('INPUT', true, ()=>{
+    console.log('Muted')
+  })
+}
+
+unMuteAudio.onclick = function(){
+  chrome.audio.setMute('INPUT', false, ()=>{
+    console.log('Un Muted')
+  })
+}
+
+
 chrome.storage.sync.get('color', function(data) {
     changeColor.style.backgroundColor = data.color;
     changeColor.setAttribute('value', data.color);
