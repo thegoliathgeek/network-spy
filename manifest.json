@@ -3,6 +3,7 @@
     "name": "Request Tracker",
     "description": "Makes easy to copy and request and response body",
     "version": "1",
+    "devtools_page": "devtools.html",
     "author": "Joker",
     "page_action": {
       "default_icon": {
