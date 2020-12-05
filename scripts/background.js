@@ -1,15 +1,8 @@
-chrome.runtime.onInstalled.addListener(function() {
-    chrome.storage.sync.set({color: '#3aa757'}, function() {
-      console.log('The color is green.');
-    });
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-      chrome.declarativeContent.onPageChanged.addRules([{
-        conditions: [new chrome.declarativeContent.PageStateMatcher({
-          // pageUrl: {hostEquals: '.'},
-          pageUrl: {urlContains: ':'},
-        })
-        ],
-            actions: [new chrome.declarativeContent.ShowPageAction()]
-      }]);
-    });
-  });
+chrome.webRequest.onBeforeRequest.addListener(
+  function(details,) { 
+    var postedString = decodeURIComponent(String.fromCharCode.apply(null,
+      new Uint8Array(details.requestBody.raw[0].bytes)));
+    console.log(JSON.parse(postedString)); 
+  },
+  {urls: ["https://api.dev.lifedata.ai/v1/graphql"]},
+  ["requestBody"]);
