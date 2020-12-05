@@ -15,11 +15,9 @@
       "default_title": "Happy spying on requests",
       "default_popup": "./markups/popup.html"
     },
-    "chrome_url_overrides" : {
-    },
     "background": {
       "scripts": ["./scripts/background.js"],
       "persistent": true
     },
-    "permissions": ["activeTab", "proxy", "storage", "declarativeContent", "webRequest","webRequestBlocking",  "<all_urls>"]
+    "permissions": ["activeTab", "storage", "declarativeContent", "tabs"]
    }

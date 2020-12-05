@@ -1,41 +1,73 @@
-// chrome.webRequest.onBeforeRequest.addListener(
-//   function(details,) { 
-//     var postedString = decodeURIComponent(String.fromCharCode.apply(null,
-//       new Uint8Array(details.requestBody.raw[0].bytes)));
-//     // console.log(details); 
-//   },
-//   {urls: ["https://api.dev.lifedata.ai/v1/graphql"]},
-//   ["requestBody"]);
 
 
-  // chrome.devtools.network.onRequestFinished.addListener(request => {
-  //   request.getContent((body) => {
-  //     if (request.request && request.request.url) {
-  //       console.log(body)
-  //       if (request.request.url.includes('<url-to-intercept>')) {
-  //         // chrome.runtime.sendMessage({
-  //         //     response: body
-  //         // });
-  //       }
-  //     }
-  //   });
-  // });
+//   chrome.runtime.onConnect.addListener(function(devToolsConnection) {
+//     // assign the listener function to a variable so we can remove it later
+//     var devToolsListener = function(message, sender, sendResponse) {
+//         // Inject a content script into the identified tab
+//         console.log(message)
+//         // chrome.tabs.executeScript(message.tabId,
+//         //     { file: message.scriptToInject });
+//     }
+//     // add the listener
+//     devToolsConnection.onMessage.addListener(devToolsListener);
+
+//     devToolsConnection.onDisconnect.addListener(function() {
+//          devToolsConnection.onMessage.removeListener(devToolsListener);
+//     });
+// });
 
 
-  chrome.runtime.onConnect.addListener(function(devToolsConnection) {
-    // assign the listener function to a variable so we can remove it later
-    var devToolsListener = function(message, sender, sendResponse) {
-        // Inject a content script into the identified tab
-        console.log(message)
-        // chrome.tabs.executeScript(message.tabId,
-        //     { file: message.scriptToInject });
+
+// background.js
+var connections = {};
+
+chrome.runtime.onConnect.addListener(function (port) {
+
+    var extensionListener = function (message, sender, sendResponse) {
+
+        // The original connection event doesn't include the tab ID of the
+        // DevTools page, so we need to send it explicitly.
+        if (message.name == "init") {
+          connections[message.tabId] = port;
+          return;
+        }
+
+	// other message handling
     }
-    // add the listener
-    devToolsConnection.onMessage.addListener(devToolsListener);
 
-    devToolsConnection.onDisconnect.addListener(function() {
-         devToolsConnection.onMessage.removeListener(devToolsListener);
+    // Listen to messages sent from the DevTools page
+    port.onMessage.addListener(extensionListener);
+
+    port.onDisconnect.addListener(function(port) {
+        port.onMessage.removeListener(extensionListener);
+
+        var tabs = Object.keys(connections);
+        for (var i=0, len=tabs.length; i < len; i++) {
+          if (connections[tabs[i]] == port) {
+            delete connections[tabs[i]]
+            break;
+          }
+        }
     });
+});
+
+// Receive message from content script and relay to the devTools page for the
+// current tab
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    // Messages from content scripts should have sender.tab set
+    // if(request.request && request.request.method === 'POST')
+    console.log(request)
+    if (sender.tab) {
+      var tabId = sender.tab.id;
+      if (tabId in connections) {
+        connections[tabId].postMessage(request);
+      } else {
+        // console.log("Tab not found in connection list.");
+      }
+    } else {
+      // console.log("sender.tab not defined.");
+    }
+    return true;
 });
 
 
