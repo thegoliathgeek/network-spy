@@ -2,7 +2,9 @@ chrome.devtools.panels.create("Network Spy",
 "../logos/spy.png",
 "../markups/panel.html",
 function(panel) {
- 
+  chrome.storage.local.set({table: []}, ()=> {
+    // console.log('Value is set to ' + value);
+  });
 });
 
 
@@ -22,7 +24,7 @@ chrome.devtools.network.onRequestFinished.addListener(function (requestCompleted
       try{
           parsedJson = JSON.parse(content);
       }catch(err){
-        console.log('Not an JSON')
+        // console.log('Not an JSON')
       }
       chrome.runtime.sendMessage({
         content,

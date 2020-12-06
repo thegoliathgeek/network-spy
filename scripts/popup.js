@@ -1,18 +1,19 @@
 
-document.getElementById('clicker').onclick = ()=>{
-    chrome.storage.local.set({some: new Date()/1000}, function() {
-    // console.log('Value is set to ' + value);
-  });
-}
-
-const setHeader  = (val)=>{
-  document.getElementById('pannel').innerText = JSON.stringify(val);
-}
 
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
-    // console.log()
-    setHeader(changes);
+    document.getElementById('tabeldata').append = changes.table.newValue.map((val)=>{
+        if(val.post){
+        return `
+        <tr>
+    <td>${val.post.operationName}</td>
+    <td>${val.content}</td>
+  </tr>
+        
+        `;
+            
+        }
+    });
   });
 
 
@@ -21,7 +22,17 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
   });
   
   backgroundPageConnection.onMessage.addListener(function (message) {
-  document.getElementById('pannel').innerText = JSON.stringify(message);
+    chrome.storage.local.get('table', function(result) {
+        console.log(result)
+        let temp = result.table;
+        if(!temp) temp= [];
+        chrome.storage.local.set({table: [...temp, message]}, ()=> {
+            // console.log('Value is set to ' + value);
+          });
+
+      });
+        
+  
   });
   
   chrome.runtime.sendMessage({

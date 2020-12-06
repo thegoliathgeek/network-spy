@@ -29,7 +29,13 @@ chrome.runtime.onConnect.addListener(function (port) {
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  console.log(request)
+  // console.log(request)
   connections['popup-page'].postMessage(request);
     return true;
 });
+
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+    console.log(changes);
+});
+
