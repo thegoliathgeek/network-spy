@@ -2,17 +2,25 @@
 
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
-    document.getElementById('tabeldata').append = changes.table.newValue.map((val)=>{
-        if(val.post){
-        return `
-        <tr>
-    <td>${val.post.operationName}</td>
-    <td>${val.content}</td>
-  </tr>
+
+    document.getElementById('tabeldata').innerHTML = ` <tr>
+    <th>Request</th>
+    <th>Response</th>
+  </tr>`;
+    document.getElementById('tabeldata').append = changes.table.newValue.forEach((val)=>{
+       if(val.post){
+        let tbodyRef = document.getElementById('tabeldata').getElementsByTagName('tbody')[0];
+
+        let newRow = tbodyRef.insertRow();
+
+        let requestCell = newRow.insertCell();
+        let responseCell = newRow.insertCell();
+        let response = document.createTextNode(val.content);
         
-        `;
-            
-        }
+        let request = document.createTextNode(val.post.operationName)
+        requestCell.appendChild(request);
+        responseCell.appendChild(response);
+       }
     });
   });
 

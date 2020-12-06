@@ -38,4 +38,3 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 chrome.storage.onChanged.addListener(function(changes, namespace) {
     console.log(changes);
 });
-
