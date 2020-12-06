@@ -7,10 +7,10 @@
     "author": "Joker",
     "page_action": {
       "default_icon": {
-        "16": "logos/sitlogo.png",
-        "32": "logos/sitlogo.png",
-        "48": "logos/sitlogo.png",
-        "128": "logos/sitlogo.png"
+        "16": "logos/spy.png",
+        "32": "logos/spy.png",
+        "48": "logos/spy.png",
+        "128": "logos/spy.png"
       },
       "default_title": "Happy spying on requests",
       "default_popup": "./markups/popup.html"

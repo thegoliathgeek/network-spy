@@ -1,5 +1,5 @@
 chrome.devtools.panels.create("Network Spy",
-"",
+"../logos/spy.png",
 "../markups/panel.html",
 function(panel) {
  
@@ -30,7 +30,7 @@ chrome.devtools.network.onRequestFinished.addListener(function (requestCompleted
        });
     }
   });
-})
+});
 
 
 var backgroundPageConnection = chrome.runtime.connect({
