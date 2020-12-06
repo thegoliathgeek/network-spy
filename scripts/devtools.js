@@ -26,22 +26,9 @@ chrome.devtools.network.onRequestFinished.addListener(function (requestCompleted
       }
       chrome.runtime.sendMessage({
         content,
-        post: JSON.parse(requestCompletedDetails.request.postData.text)
+        post: JSON.parse(requestCompletedDetails.request.postData.text),
        });
     }
   });
 });
 
-
-var backgroundPageConnection = chrome.runtime.connect({
-  name: "devtools-page"
-});
-
-backgroundPageConnection.onMessage.addListener(function (message) {
-  console.log(message)
-});
-
-chrome.runtime.sendMessage({
-  tabId: chrome.devtools.inspectedWindow.tabId,
-  scriptToInject: "content_script.js"
-});

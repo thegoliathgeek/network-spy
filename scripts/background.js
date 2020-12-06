@@ -1,41 +1,18 @@
-
-
-//   chrome.runtime.onConnect.addListener(function(devToolsConnection) {
-//     // assign the listener function to a variable so we can remove it later
-//     var devToolsListener = function(message, sender, sendResponse) {
-//         // Inject a content script into the identified tab
-//         console.log(message)
-//         // chrome.tabs.executeScript(message.tabId,
-//         //     { file: message.scriptToInject });
-//     }
-//     // add the listener
-//     devToolsConnection.onMessage.addListener(devToolsListener);
-
-//     devToolsConnection.onDisconnect.addListener(function() {
-//          devToolsConnection.onMessage.removeListener(devToolsListener);
-//     });
-// });
-
-
-
-// background.js
 var connections = {};
 
 chrome.runtime.onConnect.addListener(function (port) {
 
-    var extensionListener = function (message, sender, sendResponse) {
+  connections = {...connections, [port.name]: port}
 
-        // The original connection event doesn't include the tab ID of the
-        // DevTools page, so we need to send it explicitly.
+    var extensionListener = function (message, sender, sendResponse) {
+        console.log(message, sender, sendResponse)
         if (message.name == "init") {
           connections[message.tabId] = port;
           return;
         }
 
-	// other message handling
     }
 
-    // Listen to messages sent from the DevTools page
     port.onMessage.addListener(extensionListener);
 
     port.onDisconnect.addListener(function(port) {
@@ -51,39 +28,8 @@ chrome.runtime.onConnect.addListener(function (port) {
     });
 });
 
-// Receive message from content script and relay to the devTools page for the
-// current tab
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    // Messages from content scripts should have sender.tab set
-    // if(request.request && request.request.method === 'POST')
-    console.log(request)
-    if (sender.tab) {
-      var tabId = sender.tab.id;
-      if (tabId in connections) {
-        connections[tabId].postMessage(request);
-      } else {
-        // console.log("Tab not found in connection list.");
-      }
-    } else {
-      // console.log("sender.tab not defined.");
-    }
+  console.log(request)
+  connections['popup-page'].postMessage(request);
     return true;
-});
-
-
-var openCount = 0;
-chrome.runtime.onConnect.addListener(function (port) {
-    if (port.name == "devtools-page") {
-      if (openCount == 0) {
-        console.log("DevTools window opening.");
-      }
-      openCount++;
-
-      port.onDisconnect.addListener(function(port) {
-          openCount--;
-          if (openCount == 0) {
-            console.log("Last DevTools window closing.");
-          }
-      });
-    }
 });
